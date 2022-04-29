@@ -1,6 +1,8 @@
 import Card from "./Card"
 import styled from "styled-components"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getAllCharacters } from "../redux/actions"
 
 const CardsContainer = () => {
     
@@ -8,21 +10,13 @@ const CardsContainer = () => {
         display: flex;
         flex-wrap: wrap;
     `
-    const [ apiInfo, setApiInfo ] = useState([])
+    const dispatch = useDispatch()
 
-    const url = "https://rickandmortyapi.com/api/character"
-
-    function fetchingData(){
-        fetch(url)
-            .then(data => data.json())
-            .then(res => setApiInfo(res.results))
-            .catch(e => console.log(e))
-    }
+    const apiInfo = useSelector( state => state.characters) 
 
     useEffect(() => {
-        fetchingData()
-        return fetchingData()
-    },[])
+        dispatch(getAllCharacters())
+    },[dispatch])
     
     return (
         <Contenedor>

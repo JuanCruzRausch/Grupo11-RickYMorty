@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import { getAllCharacters } from "../redux/actions"
 
 function Detail(){
     const params = useParams()
 
-    const [ apiInfo, setApiInfo ] = useState([])
+    const dispatch = useDispatch()
 
-    const url = "https://rickandmortyapi.com/api/character"
+    const apiInfo = useSelector(state => state.characters)
 
     useEffect(() => {
-        fetch(url)
-            .then(data => data.json())
-            .then(res => setApiInfo(res.results))
-            .catch(e => console.log(e))
-    },[])
+        dispatch(getAllCharacters())
+    },[dispatch])
 
-    const res = apiInfo?.filter(char => char.id == Number(params.id))
+    const res = apiInfo?.filter(char => char.id === Number(params.id))
     
     return(
         <div>
